@@ -1,0 +1,35 @@
+{
+  "name": "week-9-task-polymathmode",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:decadevs/week-9-task-polymathmode.git",
+  "author": "ndu ulenu <nduulenu@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon dist/app.js",
+    "compile": "tsc -w"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/cookie-parser": "^1.4.3",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.17",
+    "@types/jsonwebtoken": "^9.0.2",
+    "@types/morgan": "^1.9.4",
+    "@types/nodemailer": "^6.4.8",
+    "@types/uuid": "^9.0.2",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.1",
+    "mongoose": "^7.3.4",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.9.3",
+    "nodemon": "^3.0.1",
+    "uuid": "^9.0.0"
+  }
+}
