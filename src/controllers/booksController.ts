@@ -1,7 +1,7 @@
 import express from "express";
 import {Request,Response} from "express";
 import User from "../models/userModel"
-import { Book } from "../models/bookModel";
+import Book  from "../models/bookModel";
 import {v4}   from "uuid"
 
 
@@ -19,19 +19,16 @@ export const createBook=async(req:Request, res:Response)=>{
     title,
     author,
     datePublished:new Date(),
-    description:"description",
-    pageCount:"pageCount",
+    description:'',
+    pageCount:Number,
     genre,
     bookId:v4(),
     publisher:"publisher"
        })
-       const mainBook=await Book.findOne({title})
-       if(mainBook){
         res.status(200).json({
           message:`Book Created Successfully`,
-          mainBook
+          newBook
         })
-       }
  }
 
     }catch(err){
@@ -63,6 +60,39 @@ export const getAllUsers=async(req:Request,res:Response)=>{
    }
 
   }
+
+
+export const getAllBooks = async (req: Request, res: Response) => {
+  try {
+    const page: number = Number(req.query.page) || 1; // Default to page 1 if not provided
+    const perPage: number = Number(req.query.perPage) || 5; // Default to 10 items per page if not provided
+
+    const totalBooks = await Book.countDocuments({});
+    const totalPages = Math.ceil(totalBooks / perPage);
+
+    const books = await Book.find({})
+      .skip((page - 1) * perPage)
+      .limit(perPage);
+
+    if (!books || books.length === 0) {
+      return res.status(404).json({
+        message: `No books available`,
+      });
+    }
+
+    return res.status(200).json({
+      message: `Here's a list of available books (Page ${page}/${totalPages})`,
+      books,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      message: 'Internal server error',
+    });
+  }
+};
+
+
 
   export const updateBooks=async(req:Request,res:Response)=>{
       try{

@@ -5,6 +5,7 @@ const router=express.Router();
 
 
 
+
 router.post('/createUser',createUser)
 router.post('/login',logIn)
 

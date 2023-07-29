@@ -16,7 +16,7 @@ export interface IBook{
     
 }
 
-const bookSchema=new Schema({
+export const bookSchema=new Schema({
     title:{
      type:String,
      require:[true]
@@ -53,6 +53,6 @@ const bookSchema=new Schema({
 },{
     timestamps:true
 })
-export const Book= mongoose.model<IBook>('Book',bookSchema)
+const Book= mongoose.model<IBook>('Book',bookSchema)
 
 export default Book

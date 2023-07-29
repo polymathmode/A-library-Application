@@ -23,9 +23,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Book = void 0;
+exports.bookSchema = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
-const bookSchema = new mongoose_1.Schema({
+exports.bookSchema = new mongoose_1.Schema({
     title: {
         type: String,
         require: [true]
@@ -61,5 +61,5 @@ const bookSchema = new mongoose_1.Schema({
 }, {
     timestamps: true
 });
-exports.Book = mongoose_1.default.model('Book', bookSchema);
-exports.default = exports.Book;
+const Book = mongoose_1.default.model('Book', exports.bookSchema);
+exports.default = Book;

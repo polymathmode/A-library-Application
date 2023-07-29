@@ -1,4 +1,5 @@
 import mongoose,{Schema} from "mongoose";
+import { IBook, bookSchema } from "./bookModel";
 
 
 export  interface IUser {
@@ -8,7 +9,7 @@ export  interface IUser {
     email:string;
     password:string;
     role:string;
-    books:[Record<string,string>];
+    books:[IBook];
 
 }
 
@@ -34,7 +35,7 @@ const userSchema=new Schema({
                 
     },
     books:{
-        type:Array,
+        type:[bookSchema],
         require:false
     },
 });

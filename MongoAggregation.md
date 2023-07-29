@@ -1,5 +1,4 @@
 ## Solve using your mongodb-compass aggregation tool
-
 ### Requirements:
 
 - Import the restaurant.json file as a new collection
@@ -31,3 +30,257 @@
 12. Write a MongoDB query to arranged the name of the cuisine in ascending order and for that same cuisine borough should be in descending order.
 
 13. Write a MongoDB query to know whether all the addresses contains the street or not.
+
+
+
+<!-- Solution -->
+
+1. db.allRestaurants.find({
+  "name": {
+    "$regex": "Reg",
+    "$options": "i" // This option makes the search case-insensitive
+  }
+}, {
+  "restaurant_id": 1,
+  "name": 1,
+  "borough": 1,
+  "cuisine": 1,
+  "_id": 0
+})
+2.db.allRestaurants.find({
+  "borough": "Bronx",
+  "$or": [
+    { "cuisine": "American" },
+    { "cuisine": "Chinese" }
+  ]
+})
+
+3.db.allRestaurants.find({
+  "borough": {
+    "$in": ["Staten Island", "Queens", "Bronx", "Brooklyn"]
+  }
+}, {
+  "restaurant_id": 1,
+  "name": 1,
+  "borough": 1,
+  "cuisine": 1,
+  "_id": 0
+})
+
+4.db.allRestaurants.find({
+  "borough": {
+    "$nin": ["Staten Island", "Queens", "Bronx", "Brooklyn"]
+  }
+}, {
+  "restaurant_id": 1,
+  "name": 1,
+  "borough": 1,
+  "cuisine": 1,
+  "_id": 0
+})
+
+5.db.allRestaurants.find({
+  "grades.score": { "$lte": 10 }
+}, {
+  "restaurant_id": 1,
+  "name": 1,
+  "borough": 1,
+  "cuisine": 1,
+  "_id": 0
+})
+
+6.db.allRestaurants.find({
+  "$or": [
+    {
+      "cuisine": { "$nin": ["American", "Chinese"] }
+    },
+    {
+      "name": { "$regex": "^Wil", "$options": "i" }
+    }
+  ]
+}, {
+  "restaurant_id": 1,
+  "name": 1,
+  "borough": 1,
+  "cuisine": 1,
+  "_id": 0
+})
+
+7.db.allRestaurants.aggregate([
+  {
+    "$match": {
+      "grades": {
+        "$elemMatch": {
+          "grade": "A",
+          "score": 11,
+          "date": {
+            "$eq": ISODate("2014-08-11T00:00:00Z")
+          }
+        }
+      }
+    }
+  },
+  {
+    "$project": {
+      "restaurant_id": 1,
+      "name": 1,
+      "grades": {
+        "$filter": {
+          "input": "$grades",
+          "as": "grade",
+          "cond": {
+            "$and": [
+              { "$eq": ["$$grade.grade", "A"] },
+              { "$eq": ["$$grade.score", 11] },
+              { "$eq": ["$$grade.date", ISODate("2014-08-11T00:00:00Z")] }
+            ]
+          }
+        }
+      },
+      "_id": 0
+    }
+  }
+])
+
+8.db.allRestaurants.aggregate([
+  {
+    "$match": {
+      "grades.1.grade": "A",
+      "grades.1.score": 9,
+      "grades.1.date": ISODate("2014-08-11T00:00:00Z")
+    }
+  },
+  {
+    "$project": {
+      "restaurant_id": 1,
+      "name": 1,
+      "grades": {
+        "$filter": {
+          "input": "$grades",
+          "as": "grade",
+          "cond": {
+            "$and": [
+              { "$eq": ["$$grade.grade", "A"] },
+              { "$eq": ["$$grade.score", 9] },
+              { "$eq": ["$$grade.date", ISODate("2014-08-11T00:00:00Z")] }
+            ]
+          }
+        }
+      },
+      "_id": 0
+    }
+  }
+])
+
+
+9.db.allRestaurants.aggregate([
+  {
+    "$match": {
+      "address.coord.1": { "$gt": 42, "$lte": 52 }
+    }
+  },
+  {
+    "$project": {
+      "restaurant_id": 1,
+      "name": 1,
+      "address": 1,
+      "geographical_location": "$address.coord",
+      "_id": 0
+    }
+  }
+])
+
+10.db.allRestaurants.aggregate([
+  {
+    "$match": {
+      "address.coord.1": { "$gt": 42, "$lte": 52 }
+    }
+  },
+  {
+    "$project": {
+      "restaurant_id": 1,
+      "name": 1,
+      "address": 1,
+      "geographical_location": "$address.coord",
+      "_id": 0
+    }
+  },
+  {
+    "$sort": {
+      "name": 1
+    }
+  }
+])
+
+11.db.allRestaurants.aggregate([
+  {
+    "$match": {
+      "address.coord.1": { "$gt": 42, "$lte": 52 }
+    }
+  },
+  {
+    "$project": {
+      "restaurant_id": 1,
+      "name": 1,
+      "address": 1,
+      "geographical_location": "$address.coord",
+      "_id": 0
+    }
+  },
+  {
+    "$sort": {
+      "name": -1
+    }
+  }
+])
+
+12. db.allRestaurants.aggregate([
+  {
+    "$match": {
+      "address.coord.1": { "$gt": 42, "$lte": 52 }
+    }
+  },
+  {
+    "$project": {
+      "restaurant_id": 1,
+      "name": 1,
+      "borough": 1,
+      "cuisine": 1,
+      "address": 1,
+      "geographical_location": "$address.coord",
+      "_id": 0
+    }
+  },
+  {
+    "$sort": {
+      "cuisine": 1,
+      "borough": -1
+    }
+  }
+])
+
+13.db.allRestaurants.aggregate([
+  {
+    "$match": {
+      "address.street": {
+        "$exists": true
+      }
+    }
+  },
+  {
+    "$group": {
+      "_id": null,
+      "count": {
+        "$sum": 1
+      }
+    }
+  }
+])
+
+
+
+
+
+
+
+

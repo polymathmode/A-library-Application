@@ -19,7 +19,7 @@ export const sendmail = async(from:string,to:string,subject:string,html:string)=
         const response=await transporter.sendMail({
         from:process.env.GMAIL_USER,
         to,
-        subject:'Welcome',
+        subject,
         html
         })
 

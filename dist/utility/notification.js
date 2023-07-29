@@ -22,7 +22,7 @@ const sendmail = async (from, to, subject, html) => {
         const response = await exports.transporter.sendMail({
             from: process.env.GMAIL_USER,
             to,
-            subject: 'Welcome',
+            subject,
             html
         });
     }
